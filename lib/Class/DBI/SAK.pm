@@ -1,85 +1,83 @@
 package Class::DBI::SAK;
-# $Id: SAK.pm,v 1.3 2003/04/25 18:56:19 cwest Exp $
 
 use vars qw[$VERSION %EXTENSIONS @OVERRIDES];
 use Carp;
 use strict;
 # use warnings;
 
-$VERSION = (qw$Revision: 1.3 $)[1];
+$VERSION = '1.4';
 
 %EXTENSIONS = (
-	':useful' => {
-		'AbstractSearch'       => 'use %s',
-		'Join'                 => 'use mixin qw[%s]',
-		'Pager'                => 'use %s',
-	},
-	':mysql'  => {
-		'mysql'                 => 'use base qw[%s]',
-		'mysql::FullTextSearch' => 'use %s',
-	},
-	'Extension'   => 'use base qw[%s]',
-	'FromCGI'     => 'use %s',
-	'Pg'          => 'use base qw[%s]',
-	'Replication' => 'use base qw[%s]',
-	'SQLite'      => 'use base qw[%s]',
+    ':useful' => {
+        'AbstractSearch'       => 'use %s',
+        'Pager'                => 'use %s',
+    },
+    ':mysql'  => {
+        'mysql'                 => 'use base qw[%s]',
+        'mysql::FullTextSearch' => 'use %s',
+    },
+    'Extension'   => 'use base qw[%s]',
+    'FromCGI'     => 'use %s',
+    'Pg'          => 'use base qw[%s]',
+    'Replication' => 'use base qw[%s]',
+    'SQLite'      => 'use base qw[%s]',
 );
 
 $EXTENSIONS{':all'} = { map {
-	ref $EXTENSIONS{$_}   ?
-	%{$EXTENSIONS{$_}}    :
-	( $_ => $EXTENSIONS{$_} )
+    ref $EXTENSIONS{$_}   ?
+    %{$EXTENSIONS{$_}}    :
+    ( $_ => $EXTENSIONS{$_} )
 } keys %EXTENSIONS };
 
 @OVERRIDES = ( qw[
-	Extension mysql Pg Replication SQLite
+    Extension mysql Pg Replication SQLite
 ] );
 
 sub import {
-	my ($class, @requests) = @_;
-	my $caller  = caller(0);
-	my %modules = ();
-	my @uses    = ();
+    my ($class, @requests) = @_;
+    my $caller  = caller(0);
+    my %modules = ();
+    my @uses    = ();
 
-	@requests = ':useful' unless @requests;
+    @requests = ':useful' unless @requests;
 
-	foreach my $req ( @requests ) {
-		if ( substr( $req, 0, 1 ) eq ':' ) {
-			if ( exists $EXTENSIONS{$req} ) {
-				$modules{$_} = $EXTENSIONS{$req}->{$_}
-					foreach keys %{$EXTENSIONS{$req}};
-			} else {
-				croak "$class does not export a $req tag";
-			}
-		} else {
-			if ( exists $EXTENSIONS{':all'}->{$req} ) {
-				$modules{$req} = $EXTENSIONS{':all'}->{$req};
-			} else {
-				croak "$class does not export $req\n";
-			}
-		}
-	}
+    foreach my $req ( @requests ) {
+        if ( substr( $req, 0, 1 ) eq ':' ) {
+            if ( exists $EXTENSIONS{$req} ) {
+                $modules{$_} = $EXTENSIONS{$req}->{$_}
+                    foreach keys %{$EXTENSIONS{$req}};
+            } else {
+                croak "$class does not export a $req tag";
+            }
+        } else {
+            if ( exists $EXTENSIONS{':all'}->{$req} ) {
+                $modules{$req} = $EXTENSIONS{':all'}->{$req};
+            } else {
+                croak "$class does not export $req\n";
+            }
+        }
+    }
 
-	while ( my ($name, $use) = each %modules ) {
-		push @uses, sprintf $use, "Class::DBI::$name";
-	}
-	
-	unshift @uses, 'use base qw[Class::DBI]'
-		unless grep { exists $modules{$_} } @OVERRIDES;
-	
-	@uses = sort { ( () = $b =~ /base/ ) <=> ( () = $a =~ /base/ ) } @uses;
-	
-	my $statement  = join ";\n", sort {
-		( () = $b =~ /base/ ) <=> ( () = $a =~ /base/ )
-	} @uses;
-	$statement .= ";\n";
+    while ( my ($name, $use) = each %modules ) {
+        push @uses, sprintf $use, "Class::DBI::$name";
+    }
 
-	eval qq[
-		package $caller;
-		$statement;
-		package $class;
-	];
-	croak $@ if $@;
+    unshift @uses, 'use base qw[Class::DBI]'
+        unless grep { exists $modules{$_} } @OVERRIDES;
+
+    @uses = sort { ( () = $b =~ /base/ ) <=> ( () = $a =~ /base/ ) } @uses;
+
+    my $statement  = join ";\n", sort {
+        ( () = $b =~ /base/ ) <=> ( () = $a =~ /base/ )
+    } @uses;
+    $statement .= ";\n";
+
+    eval qq[
+        package $caller;
+        $statement;
+        package $class;
+    ];
+    croak $@ if $@;
 }
 
 1;
@@ -147,7 +145,7 @@ be useful to the end user (you) since so many of them conflict.
 =item C<:useful>
 
 Modules that are generally useful all the time.  AbstractSearch,
-Join, Pager.  This is the default if no tags are given at all.
+and Pager.  This is the default if no tags are given at all.
 
 =item C<:mysql>
 
@@ -195,8 +193,5 @@ terms as Perl itself.
 =head1 SEE ALSO
 
 L<perl>, L<Class::DBI>.
-
-=cut
-
 
 =cut
