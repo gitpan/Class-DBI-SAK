@@ -35,7 +35,7 @@ DESCRIPTION
 
     ":useful"
         Modules that are generally useful all the time. AbstractSearch,
-        Join, Pager.
+        Join, Pager. This is the default if no tags are given at all.
 
     ":mysql"
         Modules for widened support for Mysql. mysql, mysql::FullTextSearch.

@@ -1,4 +1,4 @@
-# $Id: Build.PL,v 1.1 2003/03/21 16:22:24 cwest Exp $
+# $Id: Build.PL,v 1.3 2003/03/21 19:13:03 cwest Exp $
 use strict;
 
 use Module::Build;
@@ -10,6 +10,10 @@ Module::Build->new(
 		'Class::DBI' => 0,
 	},
 	build_requires => {
-		'Test::More' => 0,
+		'Class::DBI::AbstractSearch' => 0,
+		'Class::DBI::Join'           => 0,
+		'Class::DBI::Pager'          => 0,
+		'mixin'                      => 0,
+		'Test::More'                 => 0,
 	},
 )->create_build_script;

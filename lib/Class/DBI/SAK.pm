@@ -1,12 +1,12 @@
 package Class::DBI::SAK;
-# $Id: SAK.pm,v 1.1 2003/03/21 16:22:24 cwest Exp $
+# $Id: SAK.pm,v 1.2 2003/03/21 19:09:25 cwest Exp $
 
 use vars qw[$VERSION %EXTENSIONS @OVERRIDES];
 use Carp;
 use strict;
 # use warnings;
 
-$VERSION = (qw$Revision: 1.1 $)[1];
+$VERSION = (qw$Revision: 1.2 $)[1];
 
 %EXTENSIONS = (
 	':useful' => {
@@ -136,7 +136,7 @@ be useful to the end user (you) since so many of them conflict.
 =item C<:useful>
 
 Modules that are generally useful all the time.  AbstractSearch,
-Join, Pager.
+Join, Pager.  This is the default if no tags are given at all.
 
 =item C<:mysql>
 
