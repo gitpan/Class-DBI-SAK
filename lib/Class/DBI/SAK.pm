@@ -1,12 +1,12 @@
 package Class::DBI::SAK;
-# $Id: SAK.pm,v 1.2 2003/03/21 19:09:25 cwest Exp $
+# $Id: SAK.pm,v 1.3 2003/04/25 18:56:19 cwest Exp $
 
 use vars qw[$VERSION %EXTENSIONS @OVERRIDES];
 use Carp;
 use strict;
 # use warnings;
 
-$VERSION = (qw$Revision: 1.2 $)[1];
+$VERSION = (qw$Revision: 1.3 $)[1];
 
 %EXTENSIONS = (
 	':useful' => {
@@ -111,6 +111,17 @@ a pain.  Enter the Swiss Army Knife.
 This module is intelligent.  It knows how each module is supposed
 to be used, and which ones override the need to
 C<use base qw[Class::DBI]>.
+
+C<Class::DBI::SAK> is not a subclass of C<Class::DBI>.  If you want
+to subclass C<Class::DBI> you do the following.
+
+  use Class::DBI::SAK qw[:useful];
+  use base qw[Class::DBI];
+
+Also, C<Class::DBI::SAK> installation recommends that you install the
+described in the C<:useful> tag.  No modules described in L<Tags>
+or L<Modules> are bundled with this distribution.  They must be installed
+by you if you want to use them.
 
 =head2 Tags
 

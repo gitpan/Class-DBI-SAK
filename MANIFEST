@@ -2,7 +2,8 @@ Build.PL
 Changes
 INSTALL
 MANIFEST
-README
 META.yml
+Makefile.PL
+README
 lib/Class/DBI/SAK.pm
 t/basic.t
